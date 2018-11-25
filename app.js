@@ -9,15 +9,17 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer;
+var scores, roundScore, activePlayer, gamePlaying;
 
 init();
 
 // Roll button implementation
 document.querySelector('.btn-roll').addEventListener('click', function(){
 
+    if (gamePlaying) {
+
     // Pick a random number
-        var dice = Math.floor(Math.random() * 6) + 1; //generate random number between 1 and 6
+    var dice = Math.floor(Math.random() * 6) + 1; //generate random number between 1 and 6
 
     // Display the result
         var diceDOM = document.querySelector('.dice')
@@ -33,12 +35,15 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
             // Next player
                 nextPlayer();
         }
+    }
 })
 
 // Hold button implementation
 document.querySelector('.btn-hold').addEventListener('click', function(){
+
+    if (gamePlaying) {
     // Add current score to global score
-        scores[activePlayer] += roundScore;
+    scores[activePlayer] += roundScore;
 
     // Update UI
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
@@ -57,12 +62,13 @@ document.querySelector('.btn-hold').addEventListener('click', function(){
             // Remove active class from player panel
             document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
 
+            gamePlaying = false;
+
         } else {
             // Change player
             nextPlayer();
         }
-
-
+    }
 })
 
 // New Game button implementation
@@ -90,6 +96,7 @@ function init() {
     scores = [0,0]; //each play's score in an array
     roundScore = 0;  //only one round score at a time
     activePlayer = 0; //this will be used to read out score array as well - so 0->first player and 1->second player
+    gamePlaying = true;
 
     // Make the current and player score to zero
         document.getElementById('score-0').textContent ='0';
