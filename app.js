@@ -24,6 +24,7 @@ document.getElementById('current-1').textContent ='0';
 // hide the dice when page loads
 document.querySelector('.dice').style.display = 'none';
 
+// Roll button implementation
 document.querySelector('.btn-roll').addEventListener('click', function(){
 
     // Pick a random number
@@ -34,5 +35,62 @@ document.querySelector('.btn-roll').addEventListener('click', function(){
         diceDOM.style.display = 'block';
         diceDOM.src = 'dice-' + dice + '.png';
 
-    //Update the round score IF the rolled number was not 1
+    // Update the round score IF the rolled number was not 1
+        if(dice !== 1) {
+            // Add score
+                roundScore += dice;
+                document.querySelector('#current-' + activePlayer).textContent = roundScore;
+        } else {
+            // Next player
+                nextPlayer();
+        }
 })
+
+// Hold button implementation
+document.querySelector('.btn-hold').addEventListener('click', function(){
+    // Add current score to global score
+        scores[activePlayer] += roundScore;
+
+    // Update UI
+        document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+
+    // Check if player won the game
+        if (scores[activePlayer] >= 20) {
+            // Change the Actual player to winner
+            document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
+
+            // Hide dice
+            document.querySelector('.dice').style.display = 'none';
+
+            // Add winner class to player panel
+            document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
+
+            // Remove active class from player panel
+            document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
+
+        } else {
+            // Change player
+            nextPlayer();
+        }
+
+
+})
+
+function nextPlayer() {
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+    roundScore = 0;
+
+// Set the UI (current values) to default - with zero values
+    document.getElementById('current-0').textContent = '0';
+    document.getElementById('current-1').textContent = '0';
+
+// Set active player
+    document.querySelector('.player-0-panel').classList.toggle('active');
+    document.querySelector('.player-1-panel').classList.toggle('active');
+    //document.getElementById('player-0-panel').classList.remove('active');
+    //document.getElementById('player-1-panel').classList.add('active');
+
+// Hide the dice when change palyer
+    document.querySelector('.dice').style.display = 'none';
+}
+
