@@ -11,18 +11,7 @@ GAME RULES:
 
 var scores, roundScore, activePlayer;
 
-scores = [0,0]; //each play's score in an array
-roundScore = 0;  //only one round score at a time
-activePlayer = 0; //this will be used to read out score array as well - so 0->first player and 1->second player
-
-// Make the current and player score to zero
-document.getElementById('score-0').textContent ='0';
-document.getElementById('current-0').textContent ='0';
-document.getElementById('score-1').textContent ='0';
-document.getElementById('current-1').textContent ='0';
-
-// hide the dice when page loads
-document.querySelector('.dice').style.display = 'none';
+init();
 
 // Roll button implementation
 document.querySelector('.btn-roll').addEventListener('click', function(){
@@ -76,6 +65,9 @@ document.querySelector('.btn-hold').addEventListener('click', function(){
 
 })
 
+// New Game button implementation
+document.querySelector('.btn-new').addEventListener('click', init);
+
 function nextPlayer() {
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
     roundScore = 0;
@@ -92,5 +84,32 @@ function nextPlayer() {
 
 // Hide the dice when change palyer
     document.querySelector('.dice').style.display = 'none';
+}
+
+function init() {
+    scores = [0,0]; //each play's score in an array
+    roundScore = 0;  //only one round score at a time
+    activePlayer = 0; //this will be used to read out score array as well - so 0->first player and 1->second player
+
+    // Make the current and player score to zero
+        document.getElementById('score-0').textContent ='0';
+        document.getElementById('current-0').textContent ='0';
+        document.getElementById('score-1').textContent ='0';
+        document.getElementById('current-1').textContent ='0';
+        document.getElementById('name-0').textContent ='Player 1';
+        document.getElementById('name-1').textContent ='Player 2';
+
+    // Remove unnecessary clases to start the game
+        document.querySelector('.player-0-panel').classList.remove('winner');
+        document.querySelector('.player-1-panel').classList.remove('winner');
+
+        document.querySelector('.player-0-panel').classList.remove('active');
+        document.querySelector('.player-1-panel').classList.remove('active');
+
+    // Add back active class to player 1
+        document.querySelector('.player-0-panel').classList.add('active');
+
+    // hide the dice when page loads
+        document.querySelector('.dice').style.display = 'none';
 }
 
